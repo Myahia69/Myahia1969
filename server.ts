@@ -56,11 +56,25 @@ async function startServer() {
         parts: [{ text: message }]
       });
 
-      const response = await ai.models.generateContent({
-        model: "gemini-3.5-flash",
-        contents: formattedContents,
-        config: {
-          systemInstruction: `أنت الأستاذ في الكيمياء، مستشار وخبير مادة الكيمياء للثانوية العامة المصرية لعام 2026.
+      // Attempt generation with primary model and fallbacks if there are quota/spikes issues
+      const modelsToTry = [
+        "gemini-3.5-flash",
+        "gemini-3.1-flash-lite",
+        "gemini-3.1-pro-preview",
+        "gemini-flash-latest"
+      ];
+
+      let lastError = null;
+      let responseText = "";
+
+      for (const modelName of modelsToTry) {
+        try {
+          console.log(`Attempting content generation with model: ${modelName}`);
+          const response = await ai.models.generateContent({
+            model: modelName,
+            contents: formattedContents,
+            config: {
+              systemInstruction: `أنت الأستاذ في الكيمياء، مستشار وخبير مادة الكيمياء للثانوية العامة المصرية لعام 2026.
 مهمتك هي الإجابة على أسئلة الطلاب في الكيمياء بأسلوب تعليمي مبسط، مشجع، ومبهج باللغة العربية الفصحى المطعمة ببعض الكلمات المصرية المألوفة (مثل: يا بطل، ركز معايا، تريكة الامتحان).
 أنت تلتزم تماماً بمنهج وزارة التربية والتعليم المصرية لعام 2026 ونظام التقييم الحديث (الفهم ونواتج التعلم، استبعاد البدائل، التريكات والخدع الامتحانية الكامنة).
 عند الإجابة:
@@ -69,10 +83,23 @@ async function startServer() {
 3. وجّه الطالب لربط أبواب المنهج ببعضها لتنمية فكر الربط والتحليل الفوري لديه.
 4. استخدم استراتيجية "استبعاد البدائل الخاطئة" إذا سألك الطالب عن سؤال اختيار من متعدد.
 5. كن ودوداً ومحفزاً جداً لتخفيف ضغط الثانوية العامة على الطالب بكلمات إيجابية مستمرة.`
+            }
+          });
+          if (response && response.text) {
+            responseText = response.text;
+            break; // Success!
+          }
+        } catch (err: any) {
+          console.warn(`Model ${modelName} failed or unavailable:`, err.message || err);
+          lastError = err;
         }
-      });
+      }
 
-      res.json({ text: response.text });
+      if (!responseText) {
+        throw lastError || new Error("جميع خيارات النماذج الذكية غير متاحة حالياً بسبب ضغط الطلبات.");
+      }
+
+      res.json({ text: responseText });
     } catch (error: any) {
       console.error("Chat API Error:", error);
       res.status(500).json({ error: error.message || "حدث خطأ في معالجة طلبك." });

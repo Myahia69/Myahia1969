@@ -330,10 +330,10 @@ export default function ChapterIllustration({ chapterId, simulatorReactant, acti
                   const currentReactionObj = ironReactions.find(r => r.id === localReactionId);
 
                   return (
-                    <div className="bg-slate-950 p-2 md:p-4 rounded-2xl border border-slate-800 flex flex-col items-center gap-4 relative overflow-hidden">
+                    <div className="bg-slate-950 p-2 md:p-4 rounded-2xl border border-slate-800 flex flex-col items-center gap-4 relative overflow-hidden" dir="ltr">
                       <div className="absolute top-2 left-2 text-[8px] text-slate-700 font-mono select-none">Vector_Field_Flow_V2.0</div>
                       
-                      <svg className="w-full h-auto max-w-xl pointer-events-auto" viewBox="0 0 600 380">
+                      <svg className="w-full h-auto max-w-xl pointer-events-auto overflow-visible" viewBox="-40 -20 680 410" dir="ltr">
                         <defs>
                           <marker id="arrow-ch1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
                             <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#1e293b" />
