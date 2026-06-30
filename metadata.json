@@ -1,0 +1,6 @@
+{
+  "name": "مراجعة الكيمياء - الثانوية العامة",
+  "description": "منصة المراجعة النهائية والتدريب التفاعلي لمادة الكيمياء للثانوية العامة المصرية - نظام نواتج التعلم الحديث والأفكار المترابطة.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Cairo", "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  /* Custom palette matching a premium, academic, educational vibe */
+  --color-brand-primary: #0284c7; /* sky-600 */
+  --color-brand-secondary: #0f172a; /* slate-900 */
+}
+
+/* Custom RTL-friendly adjustments and smooth scroll */
+html {
+  scroll-behavior: smooth;
+  font-family: var(--font-sans);
+}
+
+body {
+  background-color: #f8fafc; /* slate-50 */
+  color: #0f172a; /* slate-900 */
+}
+
+/* Chemical formula styling */
+.chem-formula {
+  font-family: var(--font-mono);
+  font-size: 1.1em;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+/* Subscript styling for formulas */
+.chem-formula sub {
+  font-size: 0.7em;
+  bottom: -0.2em;
+}
+
+/* custom animations for state transitions */
+.fade-in-up {
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
